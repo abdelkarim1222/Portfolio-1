@@ -1,22 +1,30 @@
+// Importation des modules nécessaires
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const connectDB = require('./config/db');
 
+// Charger les variables d'environnement à partir du fichier .env
 dotenv.config();
 
+// Création de l'application Express
 const app = express();
+
+// Middleware pour permettre les requêtes CORS (Cross-Origin Resource Sharing)
 app.use(cors());
+
+// Middleware pour analyser le JSON dans les requêtes
 app.use(express.json());
 
+// Définir le port à partir des variables d'environnement ou par défaut à 5000
 const PORT = process.env.PORT || 5000;
 
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => {
-    console.log('Connected to MongoDB');
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
-    });
-}).catch(err => console.error(err));
+// Connexion à la base de données MongoDB
+connectDB();
+
+// Définir les routes
+
+// Démarrer le serveur Express sur le port défini
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
